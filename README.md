@@ -1,10 +1,17 @@
-# vim-config
-my costum vim config
+##在用户根目录下直接克隆。
 
-cd [root dir]
+```
+git clone https://github.com/wuxiwei/vim.git
+```
+##将vim\\.vimrc文件剪切到用户根目录下
 
-git clone https://github.com/linxsh/vim-config.git
+```
+mv vim/.vimrc ./
+```
+##修改vim文件夹的名称为.vim
 
-mv ./vim-config/.vimrc ./
+```
+mv vim .vim
+```
 
-mv ./vim-config ./.vim
+##大功告成
