@@ -1,114 +1,236 @@
-"引入插件pathogen使用
-execute pathogen#infect()
-call pathogen#helptags()
-"禁用vi兼容模式
-set nocompatible
-"vim的内部编码
-set encoding=utf-8
-"vim在与屏幕和键盘交互师傅使用的编码（取决于实际的终端的设定）
-set termencoding=utf-8
-"vim打开文件时的尝试使用的编码
-set fileencodings=utf-8,gbk,gb2312,default,latin1
-"开启语法高亮功能
-syntax enable
-"允许用指定高亮替换方案
-syntax on
-"显示行号
-set nu
-"括号匹配
-set showmatch
-"自动检测文件类型
-filetype plugin indent on 
-"在缩进和遇到Tab键时使用空格替代
-set expandtab
-"根据文件类型设置缩进格式
-au FileType html,vim,javascript setl shiftwidth=2
-au FileType html,vim,javascript setl tabstop=2
-au FileType java,php,pathon setl shiftwidth=4
-au FileType java,php,pathon setl tabstop=4
-"启动vim时不要自动折叠代码
-set foldlevel=100
-"自动对齐
-set ai
-"根据下面的格式对齐
-set si
-set smarttab
-set wrap
-set lbr
-set tw=0
-set foldmethod=syntax
-"总是显示状态栏
-set laststatus=2
-"显示光标当前位置
-set ruler
-"高亮显示当前行
-set cursorline
-"高亮显示搜索结果
-set hlsearch
-"禁止拆行
-set nowrap
-"设置快捷键前最，即<Leader>
-let mapleader=":"
-"设置快捷键将选中文本块复制到系统剪贴板
-map <Leader>y "+y
-"设置快捷键将系统剪贴板内容粘帖到vim
-map <Leader>p "+p
-noremap <F9> :!ctags -R<CR>
-"设置tags文件为当前目录下的tags，默认情况也是
-"set tags+=./tags
-"配置文件.vimrc更改后自动重新载入使设置生效
-autocmd! bufwritepost .vimrc source ~/.vimrc
-"vim对一些流行的编程语言的语法提供自动完成的功能，但是默认是没有启用。
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType java setlocal omnifunc=javacomplete#Complete
-"粘贴格式化
-set pastetoggle=<F5>
-"vim对一些语言实现的格式化命令
-"在命令模式下直接输入“gg=G”。
-"使用 c-x c-o 补全的时候，在窗口上方会出现一个新的窗口，补全完之后依然存在。设置关闭
-set completeopt=longest,menuone
-"
-"以下为插件设置参数
-"
-"-----------------------------------------------------------------
-"auto-pairs插件，用于自动补全括号，引号等
-"
-"-----------------------------------------------------------------
-"vim-surroun.vim插件，处理分隔符，包括添加、修改、删除。
-"添加""，选择内容，输入S"。
-"修改""为''，在分隔符内部，输入cs"'。
-"删除""，在分隔符内部，输入ds"。
-"删除<>xml标签时，t可以代替<>xml标签。
-"
-"-----------------------------------------------------------------
-"nerdtree插件，目录树。
-"设置默认开启
-autocmd vimenter * NERDTree
+filetype off " required
+
+" 启用vundle来管理vim插件
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" 安装插件写在这之后
+
+Plugin 'The-NERD-tree'
+Plugin 'The-NERD-Commenter'
+Plugin 'taglist-plus'
+Plugin 'winmanager'
+Plugin 'bufexplorer'
+Plugin 'Tagbar'
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" 安装插件写在这之前
+call vundle#end() " required
+filetype plugin on 
+
+" required" 常用命令
+" :PluginList - 查看已经安装的插件
+" :PluginInstall - 安装插件
+" :PluginUpdate - 更新插件
+" :PluginSearch - 搜索插件，例如 :PluginSearch xml就能搜到xml相关的插件
+" :PluginClean - 删除插件，把安装插件对应行删除，然后执行这个命令即可
+" h: vundle - 获取帮助
+
+" NERDTree 插件配置
 "打开关闭快捷键
 map <F3> :NERDTreeToggle<CR>
 "当只剩下目录树时，自动关闭vim。
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&b:NERDTreeType == "primary") | q | endif
-"
-"-----------------------------------------------------------------
-"xptemplate插件，代码片段补全
-"提示方式：Ctrl+\。
-"
-"vim-Markdown插件，实现markdown高亮。
-"
-"tagbar插件显示方法属性列表
-map <silent> <F4> :TagbarToggle<CR>
-let g:tagbar_width=30
-let g:tagbar_autofocus=1
-"
-"-----------------------------------------------------------------
-"NERD_commenter.vim   注释代码用的，
-"[count]<Leader>cc 光标以下count行逐行添加注释(7,cc)
-"[count]<Leader>cu 光标以下count行逐行取消注释(7,cu)
-"[count]<Leader>cm 光标以下count行尝试添加块注释(7,cm)
-"<Leader>cA 在行尾插入 /* */,并且进入插入模式。 这个命令方便写注释。
-"注：count参数可选，无则默认为选中行或当前行
-"-----------------------------------------------------------------
-let NERDSpaceDelims=1       " 让注释符与语句之间留一个空格
-let NERDCompactSexyComs=1   " 多行注释时样子更好看"
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&b:NERDTreeType == "primary") | q | endif
+
+" bufexploer插件配置
+map <leader><leader> \be
+
+" taglist options
+map <F4> :TlistToggle<CR>
+let Tlist_Ctags_Cmd="/usr/bin/ctags" "将taglist与ctags关联
+let Tlist_Auto_Open =1
+let Tlist_Show_One_File = 1 "不同时显示多个文件的tag，只显示当前文件
+let Tlist_Exit_OnlyWindow=1 "如果taglist窗口是最后一个窗口，则退出
+let Tlist_Use_SingleClick=1
+let Tlist_Use_Right_Window=1 
+
+" Tagbar 插件配置
+map <F2> :TagbarToggle<CR>
+let g:tagbar_left = 1
+
+" /***************************************************************
+"                            vim编辑设置
+" ***************************************************************/
+set fencs=utf-8,ucs-bom,gbk,cp936,gb2312,gb18030,cp936
+set nobackup
+set ff=unix
+set nocompatible  " VIM POWER!!!!
+set conceallevel=2
+
+set showcmd
+set nocp
+set synmaxcol=200
+"set showmatch     " Show matching brackets (briefly jump to it)
+set splitright
+set nosplitbelow
+set magic
+set backspace=indent,eol,start
+
+" Backup and history options
+set history=1000             " Increase history size
+"set background=dark         " Set best color scheme to dark consoles
+set autoread                 " automagically reloads a file if it was externally modified
+set autowrite
+set textwidth=120            " don't break long lines
+set formatoptions=tcmqn1
+
+" list chars
+set list
+set listchars=tab:▸\ ,
+
+" Searching
+set hlsearch   " highlight search results
+set incsearch  " incremental search
+set ignorecase
+set infercase
+set smartcase
+set nogdefault " don't use global as default in substitutions
+
+" Appearance
+set title      " Change the terminal title
+set modelines=0
+set ttyfast    " Smooth editing
+set showmode
+set number
+set hidden
+set ruler
+set nowrap     " don't visually breaks long lines
+set t_Co=256   " setting the number of colors
+set guitablabel=%n\ %f
+set showcmd
+set showfulltag
+
+" C syntax options (see :help c.vim)
+let c_syntax_for_h    = 0 " use c syntax to .h files instead of c++ syntax
+let c_space_errors    = 0 " trailing whitespave or spaces before tabs
+let c_comment_strings = 0 " highligh numbers and strings insede comments
+let c_no_comment_fold = 1 " disable syntax based folding for comments
+let c_gnu             = 1 " highlight gnu extensions
+let c_minlines        = 100
+
+" AutoComplPop
+let g:acp_completeoptPreview    = 1
+let g:acp_behaviorKeywordLength = 3
+let g:acp_mappingDriven         = 1
+
+" EnhancedCommentify
+let g:EnhCommentifyMultiPartBlocks = 'yes'
+let g:EnhCommentifyAlignRight      = 'yes'
+let g:EnhCommentifyPretty          = 'yes'
+let g:EnhCommentifyFirstLineMode   = 'yes'
+let g:EnhCommentifyRespectIndent   = 'yes'
+let g:EnhCommentifyUseBlockIndent  = 'yes'
+let g:EnhCommentifyBindInNormal    = 'no'
+let g:EnhCommentifyBindInVisual    = 'no'
+let g:EnhCommentifyBindInInsert    = 'no'
+
+" Lua
+let g:lua_complete_omni     = 1
+let g:lua_compiler_name     = '/usr/bin/luac'
+let g:lua_check_syntax      = 1
+let g:lua_complete_keywords = 1
+let g:lua_complete_globals  = 1
+let g:lua_complete_library  = 1
+let g:lua_complete_dynamic  = 1
+
+" Python
+let g:pyindent_open_paren    = '&sw'
+let g:pyindent_nested_paren  = '&sw'
+let g:pyindent_continue      = '&sw *2'
+let g:python_highlight_all   = 1
+let python_print_as_function = 1
+
+" syntastic
+let g:syntastic_enable_signs        = 1
+let g:syntastic_check_on_open       = 0
+let g:syntastic_echo_current_error  = 0
+let g:syntastic_auto_jump           = 0
+let g:syntastic_enable_highlighting = 1
+let g:syntastic_auto_loc_list       = 2
+let g:syntastic_quiet_warnings      = 0
+let g:syntastic_stl_format          = 'E:%e,W:%w'
+let g:syntastic_mode_map            = { 'mode'              : 'passive',
+                                      \ 'active_filetypes'  : [],
+                                      \ 'passive_filetypes' : ['c', 'cpp', 'python', 'tex']}
+
+" vhdl syntax configuration
+let g:vhdl_indent_genportmap = 0
+let g:vhdl_indent_rhsassign = 1
+
+" TagHighlight
+let g:TagHighlightSettings = { 'IncludeLocals': 'False' }
+
+" haskell syntax highlighting configuration
+let hs_highlight_types      = 1
+let hs_highlight_more_types = 1
+let hs_highlight_boolean    = 1
+
+" Tagbar configurations
+let g:tagbar_left = 1
+let g:tagbar_ctags_bin = 'ctags'  
+let g:tagbar_width = 30 
+
+" TaskList configuration
+let g:tlTokenList = ['TODO', 'FIXME', 'NOTE', 'HACK', 'XXX']
+
+" Haskell
+let g:haddock_browser = "/usr/bin/luakit"
+
+" Defines line limit for yaifa scanning
+let yaifa_max_lines = 1024
+
+" omnicppcomplete options
+let OmniCpp_GlobalScopeSearch   = 1 " searches in the global scope
+let OmniCpp_NamespaceSearch     = 2 " search in included files also
+let OmniCpp_DisplayMode         = 1 " always show all class members
+let OmniCpp_ShowScopeInAbbr     = 0 " don't show scope in abbreviations
+let OmniCpp_ShowPrototypeInAbbr = 1 " display prototype in abbreviations
+let OmniCpp_ShowAccess          = 1 " show access
+let OmniCpp_MayCompleteDot      = 1 " automatically completes after a '.'
+let OmniCpp_MayCompleteArrow    = 1 " automatically completes after a '->'
+let OmniCpp_MayCompleteScope    = 1 " automatically completes afer a '::'
+let OmniCpp_SelectFirstItem     = 0 " don't select the first match in the popup menu
+
+" ManPageView
+let g:manpageview_winopen = "hsplit="
+
+" C highlighting
+hi DefinedByUser ctermfg=lightgrey guifg=blue
+hi cBraces ctermfg=lightgreen guifg=lightgreen
+hi link cUserFunction DefinedByUser
+hi link cUserFunctionPointer DefinedByUser
+
+" Vim Grep
+let Grep_Skip_Dirs = 'RCS CVS SCCS .svn .git'
+let Grep_Cygwin_Find = 1
+
+" 格式强制配置
+" 删除行尾空格
+nnoremap <leader>f :%s/\s\+$//<cr>
+
+function! KRIndent()
+    let c_space_errors = 0
+    set fileformats=unix
+    set textwidth=120
+    set noexpandtab
+    set shiftround
+    set cindent
+    set formatoptions=tcqlron
+    set cinoptions=:0,l1,t0,g0
+    syntax keyword cType u8 u16 u32 u64 s8 s16 s32 s64 off64_t
+    highlight default link LinuxError ErrorMsg
+
+    syntax match LinuxError / \+\ze\t/     " spaces before tab
+    syntax match LinuxError /\s\+$/        " trailing whitespaces
+    syntax match LinuxError /\%121v.\+/    " virtual column 121 and more
+endfunction
+if has("autocmd")
+    autocmd FileType c,cpp,h,hh call KRIndent()
+endif
+
+" 以下四行参数请不要修改
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+
