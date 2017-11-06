@@ -14,4 +14,9 @@ cp vim-config/.vimrc ~/
 cp vim-config/.vim ~/ -rf
 ```
 
+##插件安装
+```
+/home/linxsh: vim
+:PluginInstall
+```
 ##大功告成
