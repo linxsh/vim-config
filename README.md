@@ -19,10 +19,15 @@ cp vim-config/.vim ~/ -rf
 /home/linxsh: vim
 :PluginInstall
 ```
-zsh + vim使用
+##zsh + vim使用
 ```
 apt-get install zsh
 chsh -s /bin/zsh  ##chsh -s /bin/zsh
 cp ../zsh-shell/.zshrc ~/
+```
+##ubuntu 64bit 安装32bit交叉编译工具链需要安装以下库
+```
+apt-get install lib32z1 lib32ncurses5
+apt-get install lib32stdc++6
 ```
 ##大功告成
