@@ -19,4 +19,10 @@ cp vim-config/.vim ~/ -rf
 /home/linxsh: vim
 :PluginInstall
 ```
+zsh + vim使用
+```
+apt-get install zsh
+chsh -s /bin/zsh  ##chsh -s /bin/zsh
+cp ../zsh-shell/.zshrc ~/
+```
 ##大功告成

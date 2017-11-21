@@ -1,0 +1,210 @@
+export PATH=$PATH:/bin:/usr/bin:/usr/sbin:/usr/local/bin
+export PATH=$PATH:/opt/gxtools/csky-linux/bin:/opt/gxtools/csky-elf/bin:/opt/gxtools/csky-abiv2-elf/bin
+export PATH=$PATH:/opt/hisi-linux/x86-arm/arm-hisiv600-linux/bin:/opt/hisi-linux/x86-arm/arm-hisiv500-linux/bin
+export GX_PREFIX=/opt/goxceed
+
+export EDITOR=vi
+
+alias -g '...'='../..'
+alias -g '....'='../../..'
+alias -g '.....'='../../../..'
+alias -g '......'='../../../../..'
+alias df='df -h -x none'
+alias free='free -m'
+alias cls=clear
+# Do we have GNU ls of a new enough version for color?
+(ls --help 2>/dev/null |grep -- --color=) >/dev/null && \
+        alias ls='ls -b -CF --color=auto'
+
+alias -g l=ls
+alias -g ll='ls -l'
+alias -g la='ls -a'
+alias -g lla='ls -lha'
+alias dir='ls -lha'
+alias du='du -h'
+alias edit=$EDITOR
+alias e=$EDITOR
+alias ftp=lftp
+alias md=mkdir
+alias grep='grep --color=auto'
+alias rd=rmdir
+alias k=killall
+alias stardate='date "+%y%m.%d/%H%M"'
+alias weather="weatherget -s CHXX0116 -m"
+alias -s c=vi
+alias -s h=vi
+alias -s cpp=vi
+alias -s cxx=vi
+alias -s html=w3m
+
+# Calculator
+calc () { echo $* |bc -l }
+
+# 命令提示符
+autoload colors 
+colors
+
+for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
+	eval _$color='%{$terminfo[bold]$fg[${(L)color}]%}'
+	eval $color='%{$fg[${(L)color}]%}'
+	(( count = $count + 1 ))
+done
+FINISH="%{$terminfo[sgr0]%}"
+PROMPT=$(echo "$CYAN%n@$BLUE%m:$GREEN%4/%(!.#.)$_YELLOW>$FINISH ")
+case $TERM in (*xterm*|*rxvt*|(dt|k|E)term)
+	precmd () { print -Pn "\e]0;%n@%M//%/\a" }
+	preexec () { print -Pn "\e]0;%n@%M//%/\ $1\a" }
+;;
+esac
+
+# Misc
+limit core 0                     # no core dumps
+umask 022                        # no user groups any more
+setopt nopromptcr                # No cr before prompt
+setopt autolist automenu nobeep  # Filename completion: the best of csh and 4dos!
+setopt autocd                    # Exec directory to cd there
+setopt noclobber noflowcontrol
+setopt list_packed
+setopt correct
+unsetopt bgnice
+
+# 自动补全功能
+setopt AUTO_LIST
+setopt AUTO_MENU
+#setopt MENU_COMPLETE            # 开启此选项，补全时会直接选中菜单项
+
+# Force emacs editing mode.
+[[ $TERM == "xterm" ]] && bindkey -e
+
+# ctrl-s will no longer freeze the terminal.
+#stty -ixon kill ^K
+stty erase "^?"
+
+eval `dircolors 2>/dev/null`       # set up color-ls variables
+watch=(notme)                      # watch for everybody but me
+LOGCHECK=120                       # check every 2 min for login/logout activity
+
+
+#自动补全选项
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' menu select
+zstyle ':completion:*:*:default' force-list always
+zstyle ':completion:*' select-prompt '%SSelect:  lines: %L  matches: %M  [%p]'
+
+#路径补全
+zstyle ':completion:*' expand 'yes'
+zstyle ':completion:*' squeeze-shlashes 'yes'
+zstyle ':completion::complete:*' '\\'
+
+#彩色补全菜单 
+eval $(dircolors -b) 
+export ZLSCOLORS="${LS_COLORS}"
+zmodload zsh/complist
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+
+# 修正大小写
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+
+# 错误校正
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+#zstyle 'completion:*:approximate:*' max-errors 2 numeric
+#
+
+#kill 命令补全      
+#compdef pkill=kill
+#compdef pkill=killall
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:*:*:*:processes' force-list always
+zstyle ':completion:*:processes' command 'ps -au$USER'
+
+# cd ~ 补全顺序
+zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+
+bindkey '\e[A' history-search-backward
+bindkey '\e[B' history-search-forward
+bindkey '^K' kill-whole-line
+bindkey -s '^L' "|less\n"		# ctrl-L pipes to less
+bindkey -s '^B' " &\n"			# ctrl-B runs it in the background
+bindkey "\e[H"   beginning-of-line	# Home (xterm)
+bindkey "\e[F"   end-of-line		# End (xterm)
+bindkey "\e[1~"  beginning-of-line	# Home (console)
+bindkey "\e[2~"  overwrite-mode		# Ins
+bindkey "\e[3~"  delete-char		# Delete
+bindkey "\e[4~"  end-of-line		# End (console)
+bindkey "\e[[5~" up-line-or-history
+bindkey "\e[[6~" down-line-or-history
+
+zipdir() { zip "$@".zip -r "$@" -x "*/.DS_Store" "*/.svn/*" "*/.git"}
+formatc() 
+{
+	dos2unix -U "$@"
+	indent -npro -kr -i8 -ts8 -sob -l120 -ss -ncs "$@"
+	rm -f "$@~"
+}
+
+# 空行(光标在行首)补全 "cd "
+user-complete(){
+	case $BUFFER in
+		"" )                       # 空行填入 "cd "
+			BUFFER="cd "
+			zle end-of-line
+			zle expand-or-complete
+			;;
+		"cd --" )                  # "cd --" 替换为 "cd +"
+			BUFFER="cd +"
+			zle end-of-line
+			zle expand-or-complete
+			;;
+		"cd +-" )                  # "cd +-" 替换为 "cd -"
+			BUFFER="cd -"
+			zle end-of-line
+			zle expand-or-complete
+			;;
+		* )
+			zle expand-or-complete
+		;;
+	esac
+}
+zle -N user-complete
+bindkey "\t" user-complete
+
+# 在命令前插入 sudo
+sudo-command-line() {
+	[[ -z $BUFFER ]] && zle up-history
+	[[ $BUFFER != sudo\ * ]] && BUFFER="sudo $BUFFER"
+
+	zle end-of-line
+}
+zle -N sudo-command-line
+bindkey "\e\e" sudo-command-line
+
+#补全 ssh scp sftp 等
+my_accounts=(
+	zhuzhg@{192.168.120.212,192.168.0.212}
+	123@211.148.131.7
+)
+zstyle ':completion:*:my-accounts' users-hosts $my_accounts
+
+# 历史纪录
+setopt share_history
+setopt csh_junkie_history
+setopt hist_ignore_dups
+setopt hist_allow_clobber
+setopt hist_reduce_blanks
+export HISTSIZE=10000            # 历史纪录条目数量
+export SAVEHIST=10000            # 注销后保存的历史纪录条目数量
+export HISTFILE=~/.zhistory      # 历史纪录文件
+setopt INC_APPEND_HISTORY        # 以附加的方式写入历史纪录
+setopt HIST_IGNORE_DUPS          # 如果连续输入的命令相同，历史纪录中只保留一个
+setopt EXTENDED_HISTORY          # 为历史纪录中的命令添加时间戳
+
+setopt AUTO_PUSHD                # 启用 cd 命令的历史纪录，cd -[TAB]进入历史路径
+setopt PUSHD_IGNORE_DUPS         # 相同的历史路径只保留一个
+
+autoload -U zsh-mime-setup
+zsh-mime-setup
+
+[[ -n "${key[Up]}"   ]]  && bindkey  "${key[Up]}" history-search-backward
+[[ -n "${key[Down]}" ]]  && bindkey  "${key[Down]}" history-search-forward
