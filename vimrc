@@ -15,6 +15,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'iamcco/mathjax-support-for-mkdp'
 Plugin 'iamcco/markdown-preview.vim'
+Plugin 'matlab'
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -271,4 +272,9 @@ endif
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
+
+" matlab config
+source $VIMRUNTIME/macros/matchit.vim
+filetype indent on
+autocmd BufEnter *.m    compiler mlint
 
