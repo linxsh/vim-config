@@ -2,11 +2,18 @@
 ```
 apt-get install zsh
 chsh -s /bin/zsh  ##重启生效
-cp ../zsh-shell/zshrc ~/.zshrc
+cp vim-config/zsh-shell/zshrc ~/.zshrc
 
 脚本执行命令not found:
 例如source, 需要执行,zsh scripts.sh
 ```
+
+### git安装以及配置
+```
+apt-get install git
+cp vim-config/gitconfig ~/.gitconfig
+```
+
 ### vim安装以及配置
 ```
 apt-get install vim
@@ -20,3 +27,4 @@ cp vim-config/vim ~/.vim -rf
 
 vim文档使用说明: http://blog.csdn.net/namecyf/article/details/7787479
 ```
+
