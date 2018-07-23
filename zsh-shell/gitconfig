@@ -1,0 +1,27 @@
+[user]
+	email = linxsh@nationalchip.com
+	name = linxsh
+[core]
+	fileMode = false
+	excludesfile = /home/linxsh/.gitignore
+
+[color]
+	ui = auto
+	diff=true
+
+[alias]
+	ci = commit
+	st = status
+	co = checkout
+	b  = branch
+	br = branch
+	patch = format-patch
+
+[diff]
+	renames = copy
+
+[rerere]
+	enabled = true
+
+[push]
+	default = matching
