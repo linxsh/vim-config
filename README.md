@@ -11,7 +11,7 @@ cp vim-config/zsh-shell/zshrc ~/.zshrc
 ### git安装以及配置
 ```
 apt-get install git
-cp vim-config/gitconfig ~/.gitconfig
+cp vim-config/zsh-shell/gitconfig ~/.gitconfig
 ```
 
 ### vim安装以及配置
@@ -28,3 +28,7 @@ cp vim-config/vim ~/.vim -rf
 vim文档使用说明: http://blog.csdn.net/namecyf/article/details/7787479
 ```
 
+### /opt下更改用户组
+```
+sudo chown linxsh -R /opt
+```
