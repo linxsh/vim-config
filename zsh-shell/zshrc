@@ -1,6 +1,6 @@
 export PATH=$PATH:/bin:/usr/bin:/usr/sbin:/usr/local/bin
 export PATH=$PATH:/opt/gxtools/csky-linux/bin:/opt/gxtools/csky-elf/bin:/opt/gxtools/csky-abiv2-elf/bin
-export PATH=$PATH:/opt/hisi-linux/x86-arm/arm-hisiv600-linux/bin:/opt/hisi-linux/x86-arm/arm-hisiv500-linux/bin
+export PATH=$PATH:/opt/gxtools/arm-none/bin:/opt/gxtools/arm-linux/bin
 export GX_PREFIX=/opt/goxceed
 
 export EDITOR=vi
