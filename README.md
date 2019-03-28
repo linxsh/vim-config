@@ -32,3 +32,7 @@ vim文档使用说明: http://blog.csdn.net/namecyf/article/details/7787479
 ```
 sudo chown linxsh -R /opt
 ```
+### 串口用户权限更改
+```
+sudo usermod -aG dialout username
+```
