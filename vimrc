@@ -16,6 +16,7 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'iamcco/mathjax-support-for-mkdp'
 Plugin 'iamcco/markdown-preview.vim'
 Plugin 'matlab'
+Plugin 'cscope_maps'
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -278,3 +279,4 @@ source $VIMRUNTIME/macros/matchit.vim
 filetype indent on
 autocmd BufEnter *.m    compiler mlint
 
+map g<C-/> :cs find 3 <C-R>=expand(“<cword>”)<CR><CR>
